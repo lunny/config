@@ -1,6 +1,7 @@
 package config
 
 import (
+    "fmt"
     "testing"
 )
 
@@ -25,4 +26,7 @@ func TestParse(t *testing.T) {
     if v, _ := cfgs.GetInt("mgrPort"); v != 8866 {
         t.Errorf("key mgrPort should be int and equal 8866")
     }
+
+    m := cfgs.Map()
+    fmt.Println(m)
 }

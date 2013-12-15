@@ -31,6 +31,10 @@ func (config *Config) GetBool(key string) (bool, error) {
     return strconv.ParseBool(v)
 }
 
+func (config *Config) Map() map[string]string {
+    return *config
+}
+
 func New(data ...map[string]string) *Config {
     config := new(Config)
     if len(data) == 0 {
