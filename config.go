@@ -54,6 +54,9 @@ func Load(fPath string) (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
+	if len(data) > 3 && data[0] == 0xEF && data[1] == 0xBB && data[2] == 0xBF {
+		return Parse(string(data[3:len(data)])), nil
+	}
 	return Parse(string(data)), nil
 }
 
@@ -63,8 +66,8 @@ func Parse(data string) *Config {
 	for _, line := range lines {
 		line = strings.TrimRight(line, "\r")
 		vs := strings.Split(line, "=")
-		if len(vs) == 2 {
-			configs[strings.TrimSpace(vs[0])] = strings.TrimSpace(vs[1])
+		if len(vs) >= 2 {
+			configs[strings.TrimSpace(vs[0])] = strings.TrimSpace(strings.Join(vs[1:], "="))
 		}
 	}
 	return New(configs)
