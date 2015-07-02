@@ -64,6 +64,10 @@ func Parse(data string) *Config {
 	configs := make(map[string]string)
 	lines := strings.Split(string(data), "\n")
 	for _, line := range lines {
+		if strings.HasPrefix(line, ";") || strings.HasPrefix(line, "#") {
+			continue
+		}
+
 		line = strings.TrimRight(line, "\r")
 		vs := strings.Split(line, "=")
 		if len(vs) >= 2 {
