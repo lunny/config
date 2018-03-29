@@ -18,11 +18,19 @@ func TestParse(t *testing.T) {
 		t.Error("no exist key error")
 	}
 
+	if cfgs.MustString("no_exist_key", "1") != "1" {
+		t.Error("no exist key error")
+	}
+
 	if v := cfgs.Get("dbhost"); len(v) > 0 {
 		t.Errorf("key dbhost should be empty")
 	}
 
 	if cfgs.MustString("dbhost") != "" {
+		t.Error("key dbhost should be empty")
+	}
+
+	if cfgs.MustString("dbhost", "1") != "" {
 		t.Error("key dbhost should be empty")
 	}
 
