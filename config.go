@@ -16,6 +16,16 @@ func (config *Config) Get(key string) string {
 	return (*config)[key]
 }
 
+// String return the string value
+func (config *Config) MustString(key string, defaultVal ...string) string {
+	if v, ok := (*config)[key]; ok {
+		return v
+	} else if len(defaultVal) > 0 {
+		return defaultVal[0]
+	}
+	return ""
+}
+
 func (config *Config) Has(key string) bool {
 	_, ok := (*config)[key]
 	return ok
@@ -26,9 +36,49 @@ func (config *Config) GetInt(key string) (int, error) {
 	return strconv.Atoi(v)
 }
 
+func (config *Config) MustInt(key string, defaultVal ...int) int {
+	if v, ok := (*config)[key]; ok {
+		r, err := strconv.Atoi(v)
+		if err == nil {
+			return r
+		}
+	}
+
+	if len(defaultVal) > 0 {
+		return defaultVal[0]
+	}
+	return 0
+}
+
+func (config *Config) MustInt64(key string, defaultVal ...int64) int64 {
+	if v, ok := (*config)[key]; ok {
+		r, err := strconv.ParseInt(v, 10, 64)
+		if err == nil {
+			return r
+		}
+	}
+	if len(defaultVal) > 0 {
+		return defaultVal[0]
+	}
+	return 0
+}
+
 func (config *Config) GetBool(key string) (bool, error) {
 	v := config.Get(key)
 	return strconv.ParseBool(v)
+}
+
+func (config *Config) MustBool(key string, defaultVal ...bool) bool {
+	if v, ok := (*config)[key]; ok {
+		r, err := strconv.ParseBool(v)
+		if err == nil {
+			return r
+		}
+	}
+	if len(defaultVal) > 0 {
+		return defaultVal[0]
+	}
+	return false
 }
 
 func (config *Config) GetSlice(key, sep string) []string {
