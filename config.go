@@ -81,6 +81,23 @@ func (config *Config) MustBool(key string, defaultVal ...bool) bool {
 	return false
 }
 
+func (config *Config) GetFloat64(key string) (float64, error) {
+	return strconv.ParseFloat(config.Get(key), 64)
+}
+
+func (config *Config) MustFloat64(key string, defaultVal ...float64) float64 {
+	if v, ok := (*config)[key]; ok {
+		r, err := strconv.ParseFloat(v, 64)
+		if err == nil {
+			return r
+		}
+	}
+	if len(defaultVal) > 0 {
+		return defaultVal[0]
+	}
+	return 0
+}
+
 func (config *Config) GetSlice(key, sep string) []string {
 	return strings.Split(config.Get(key), sep)
 }
